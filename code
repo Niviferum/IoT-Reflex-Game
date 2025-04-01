@@ -1,0 +1,53 @@
+#include <LiquidCrystal_I2C.h>
+
+
+LiquidCrystal_I2C lcd(0x20, 16, 2);  // Adresse I2C, 16 colonnes, 2 lignes
+
+void setup() {
+  lcd.init(); // Initialisation de l'écran
+  lcd.backlight(); // Activer le rétroéclairage
+  lcd.setCursor(0, 0);
+  lcd.print("Hello, Reflex!");
+}
+
+// Définition des broches
+const int ledPin = 7;
+const int buttonPin = 8;
+unsigned long startTime, reactionTime;
+bool gameStarted = false;
+
+void setup() {
+    pinMode(ledPin, OUTPUT);
+    pinMode(buttonPin, INPUT_PULLUP);
+    lcd.begin(16, 2);
+    lcd.print("Appuyez Start!");
+    delay(2000);
+    lcd.clear();
+    lcd.print("Attendez...");
+    randomSeed(analogRead(0)); // Initialisation du random
+}
+
+void loop() {
+    delay(random(2000, 5000)); // Attente aléatoire entre 2 et 5 secondes
+    
+    lcd.clear();
+    lcd.print("GO!");
+    digitalWrite(ledPin, HIGH);
+    startTime = millis();
+    gameStarted = true;
+    
+    while (gameStarted) {
+        if (digitalRead(buttonPin) == LOW) {
+            reactionTime = millis() - startTime;
+            lcd.clear();
+            lcd.print("Temps: ");
+            lcd.print(reactionTime);
+            lcd.print(" ms");
+            digitalWrite(ledPin, LOW);
+            gameStarted = false;
+            delay(3000);
+            lcd.clear();
+            lcd.print("Attendez...");
+        }
+    }
+}
