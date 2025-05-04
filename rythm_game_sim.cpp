@@ -17,6 +17,7 @@
 #include <thread>
 #include <cstdlib>
 #include <ctime>
+#include <string>
 
 using namespace std;
 using namespace chrono;
