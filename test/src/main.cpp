@@ -12,10 +12,9 @@ Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 const int ledPins[3] = {23, 22, 21};
 const int buttonPins[3] = {19, 18, 5};
 
-const int MAX_SUCCES = 5;  // nombre de bonnes réponses pour terminer le jeu
-const unsigned long TIMEOUT = 2000;  // en ms
+const int MAX_SUCCES = 5;
+const unsigned long TIMEOUT = 4000;
 
-// Variables de jeu
 int succesCount = 0;
 unsigned long totalReactionTime = 0;
 
@@ -31,16 +30,15 @@ void afficherMessage(const String& ligne1, const String& ligne2 = "") {
 
 void setup() {
   Serial.begin(115200);
-
-  Wire.begin(2, 1); // SDA=2, SCL=1 pour ton OLED
+  Wire.begin(2, 1); // SDA=2, SCL=1
 
   if (!display.begin(SSD1306_SWITCHCAPVCC, 0x3C)) {
-    Serial.println("Erreur écran OLED");
+    Serial.println("Error OLED screen");
     while (true);
   }
 
-  afficherMessage("Jeu de rythme", "Appuie vite !");
-  delay(2000);
+  afficherMessage("Rythm Game", "Be quick !");
+  delay(4000);
 
   for (int i = 0; i < 3; i++) {
     pinMode(ledPins[i], OUTPUT);
@@ -48,13 +46,12 @@ void setup() {
   }
 }
 
-void loop() {
-  // Réinitialiser les compteurs pour chaque partie
+void jouerUnePartie() {
   succesCount = 0;
   totalReactionTime = 0;
 
   while (succesCount < MAX_SUCCES) {
-    afficherMessage("Prépare-toi...");
+    afficherMessage("Wait...");
     delay(random(1000, 3000));
 
     int activeLed = random(0, 3);
@@ -78,9 +75,9 @@ void loop() {
     digitalWrite(ledPins[activeLed], LOW);
 
     if (!boutonPresse) {
-      afficherMessage("Trop lent !");
+      afficherMessage("Too slow !");
       delay(1500);
-      continue;  // ne compte pas cette manche
+      continue;
     }
 
     if (boutonAppuye == activeLed) {
@@ -88,20 +85,74 @@ void loop() {
       totalReactionTime += reactionTime;
       succesCount++;
 
-      afficherMessage("Bien joué !", "Temps: " + String(reactionTime) + " ms");
+      afficherMessage("Well Played !", "Time: " + String(reactionTime) + " ms");
     } else {
-      afficherMessage("Mauvais bouton !");
+      afficherMessage("Wrong button !");
     }
 
     delay(2000);
   }
 
-  // Affichage du score à la fin
+  // Score final
   unsigned long averageTime = totalReactionTime / MAX_SUCCES;
-  afficherMessage("Fin du jeu !", "Moyenne: " + String(averageTime) + " ms");
-  delay(5000);
+  afficherMessage("END !", "Moyenne: " + String(averageTime) + " ms");
+  delay(4000);
+}
 
-  // Option : recommencer automatiquement
-  afficherMessage("Rejouer dans 3s...");
-  delay(3000);
+void attendreRejouer() {
+  afficherMessage("press 3x", "the same button");
+
+  int dernierBouton = -1;
+  int compte = 0;
+  unsigned long t0 = millis();
+  const unsigned long TIMEOUT_REJOUER = 20000; // 20 secondes
+
+  while (millis() - t0 < TIMEOUT_REJOUER) {
+    for (int i = 0; i < 3; i++) {
+      if (digitalRead(buttonPins[i]) == LOW) {
+        delay(30); // debounce
+
+        while (digitalRead(buttonPins[i]) == LOW); // attendre relâchement
+
+        if (i == dernierBouton) {
+          compte++;
+        } else {
+          compte = 1;
+          dernierBouton = i;
+        }
+
+        afficherMessage("Confirmation...", String(compte) + " / 3");
+
+        if (compte >= 3) {
+          afficherMessage("Rejouons !");
+          delay(1000);
+          return;
+        }
+
+        t0 = millis(); // reset le timer à chaque interaction
+        delay(300);
+      }
+    }
+  }
+
+  // Timeout dépassé → mise en "veille"
+  afficherMessage("Inactif", "Extinction...");
+  delay(2000);
+
+  display.ssd1306_command(SSD1306_DISPLAYOFF); // éteindre l’écran OLED
+
+  for (int i = 0; i < 3; i++) {
+    digitalWrite(ledPins[i], LOW); // éteindre toutes les LEDs
+  }
+
+  // Boucle infinie pour stopper l’exécution
+  while (true) {
+    delay(1000);
+  }
+}
+
+
+void loop() {
+  jouerUnePartie();
+  attendreRejouer(); // Boucle tant que le joueur ne confirme pas
 }
