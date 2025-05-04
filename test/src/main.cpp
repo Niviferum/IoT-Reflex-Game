@@ -105,7 +105,7 @@ void attendreRejouer() {
   int dernierBouton = -1;
   int compte = 0;
   unsigned long t0 = millis();
-  const unsigned long TIMEOUT_REJOUER = 20000; // 20 secondes
+  const unsigned long TIMEOUT_REJOUER = 10000; // 10 secondes
 
   while (millis() - t0 < TIMEOUT_REJOUER) {
     for (int i = 0; i < 3; i++) {
