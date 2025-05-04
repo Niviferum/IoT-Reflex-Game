@@ -18,6 +18,7 @@
 #include <cstdlib>
 #include <ctime>
 #include <string>
+#include <conio.h> // Pour _kbhit() et _getch()
 
 using namespace std;
 using namespace chrono;
@@ -37,6 +38,12 @@ int demanderBouton(int timeout_ms, int ledActive) {
     afficher("LED #" + to_string(ledActive), "Tape le bon chiffre (0/1/2)");
 
     while (duration_cast<milliseconds>(steady_clock::now() - start).count() < timeout_ms) {
+        if (_kbhit()) { // Vérifie si une touche a été pressée
+            char val = _getch(); // Récupère la touche pressée
+            if (val >= '0' && val <= '2') { // Vérifie si c'est un chiffre valide
+                return val - '0'; // Convertit le caractère en entier
+            }
+        }
         if (cin.rdbuf()->in_avail() > 0) {
             int val;
             cin >> val;
@@ -53,19 +60,21 @@ bool demanderRejouer() {
     int dernier = -1, compte = 0;
     auto t0 = steady_clock::now();
 
-    while (duration_cast<seconds>(steady_clock::now() - t0).count() < 20) {
-        if (cin.rdbuf()->in_avail() > 0) {
-            int val;
-            cin >> val;
-            if (val == dernier) {
-                compte++;
-            } else {
-                compte = 1;
-                dernier = val;
+    while (duration_cast<seconds>(steady_clock::now() - t0).count() < 10) {
+        if (_kbhit()) { // Vérifie si une touche a été pressée
+            char val = _getch(); // Récupère la touche pressée
+            if (val >= '0' && val <= '9') { // Vérifie si c'est un chiffre
+                int bouton = val - '0'; // Convertit le caractère en entier
+                if (bouton == dernier) {
+                    compte++;
+                } else {
+                    compte = 1;
+                    dernier = bouton;
+                }
+                afficher("Confirmation", to_string(compte) + " / 3");
+                if (compte >= 3) return true;
+                t0 = steady_clock::now(); // Réinitialise le timer
             }
-            afficher("Confirmation", to_string(compte) + " / 3");
-            if (compte >= 3) return true;
-            t0 = steady_clock::now();
         }
         this_thread::sleep_for(milliseconds(10));
     }
