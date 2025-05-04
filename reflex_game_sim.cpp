@@ -89,7 +89,7 @@ void jouerUnePartie() {
 
     while (succes < MAX_SUCCES) {
         afficher("Prepare-toi...");
-        this_thread::sleep_for(milliseconds(1000 + rand() % 2000));
+        this_thread::sleep_for(milliseconds(1000 + rand() % 5000));
 
         int led = rand() % 3;
         auto start = steady_clock::now();
@@ -118,7 +118,7 @@ void jouerUnePartie() {
 
 int main() {
     srand(time(0));
-    afficher("Jeu de rythme console", "Sois rapide !");
+    afficher("Jeu de reflexe console", "Sois rapide !");
     while (true) {
         jouerUnePartie();
         if (!demanderRejouer()) break;

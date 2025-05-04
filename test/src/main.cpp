@@ -37,7 +37,7 @@ void setup() {
     while (true);
   }
 
-  afficherMessage("Rythm Game", "Be quick !");
+  afficherMessage("Reflex Game", "Be quick !");
   delay(4000);
 
   for (int i = 0; i < 3; i++) {
@@ -52,7 +52,7 @@ void jouerUnePartie() {
 
   while (succesCount < MAX_SUCCES) {
     afficherMessage("Wait...");
-    delay(random(1000, 3000));
+    delay(random(1000, 5000));
 
     int activeLed = random(0, 3);
     digitalWrite(ledPins[activeLed], HIGH);
@@ -95,7 +95,7 @@ void jouerUnePartie() {
 
   // Score final
   unsigned long averageTime = totalReactionTime / MAX_SUCCES;
-  afficherMessage("END !", "Moyenne: " + String(averageTime) + " ms");
+  afficherMessage("END !", "average: " + String(averageTime) + " ms");
   delay(4000);
 }
 
