@@ -4,7 +4,8 @@ This project is a small reflex game in C++ / Arduino created to be loaded in an 
 
 ### About the [simulator](/reflex_game_sim.cpp)
 
-The file reflex_game_sim.cpp is a simulator of the project behavior that works all in the console of your computer. Be free to use it if you want, you'll don't need any other files to make it work.
+The file reflex_game_sim.cpp is a simulator of the project behavior that works all in the console of your computer. Be free to use it if you want, you'll don't need any other files to make it work.   
+Just make sure to have a C++ compiler installed on your computer, if it's not the case you can download gcc on their [web page](https://jmeubank.github.io/tdm-gcc/download/) and if you're using VsCode you can use the [C/C++ Compile Run Extension](https://marketplace.visualstudio.com/items/?itemName=danielpinto8zz6.c-cpp-compile-run)
 
 ## How To Play
 
