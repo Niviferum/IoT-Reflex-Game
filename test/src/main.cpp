@@ -121,10 +121,10 @@ void attendreRejouer() {
           dernierBouton = i;
         }
 
-        afficherMessage("Confirmation...", String(compte) + " / 3");
+        afficherMessage("Press...", String(compte) + " / 3");
 
         if (compte >= 3) {
-          afficherMessage("Rejouons !");
+          afficherMessage("Again !");
           delay(1000);
           return;
         }
@@ -136,7 +136,7 @@ void attendreRejouer() {
   }
 
   // Timeout dépassé → mise en "veille"
-  afficherMessage("Inactif", "Extinction...");
+  afficherMessage("Inactive", "Extinction...");
   delay(2000);
 
   display.ssd1306_command(SSD1306_DISPLAYOFF); // éteindre l’écran OLED
@@ -145,10 +145,8 @@ void attendreRejouer() {
     digitalWrite(ledPins[i], LOW); // éteindre toutes les LEDs
   }
 
-  // Boucle infinie pour stopper l’exécution
-  while (true) {
-    delay(1000);
-  }
+  esp_sleep_enable_timer_wakeup(0); // désactive tout réveil
+  esp_deep_sleep_start();           // met l'ESP32 en sommeil profond
 }
 
 
