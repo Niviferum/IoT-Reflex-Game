@@ -49,7 +49,7 @@ int demanderBouton(int timeout_ms, int ledActive) {
 }
 
 bool demanderRejouer() {
-    afficher("Veux-tu rejouer ?", "Tape 3 fois le même chiffre");
+    afficher("Veux-tu rejouer ?", "Tape 3 fois le meme chiffre");
     int dernier = -1, compte = 0;
     auto t0 = steady_clock::now();
 
@@ -79,7 +79,7 @@ void jouerUnePartie() {
     long totalReaction = 0;
 
     while (succes < MAX_SUCCES) {
-        afficher("Prépare-toi...");
+        afficher("Prepare-toi...");
         this_thread::sleep_for(milliseconds(1000 + rand() % 2000));
 
         int led = rand() % 3;
@@ -95,7 +95,7 @@ void jouerUnePartie() {
             int temps = duration_cast<milliseconds>(steady_clock::now() - start).count();
             totalReaction += temps;
             succes++;
-            afficher("Bien joué !", "Temps: " + to_string(temps) + " ms");
+            afficher("Bien joue !", "Temps: " + to_string(temps) + " ms");
         } else {
             afficher("Mauvais bouton !");
         }
