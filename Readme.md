@@ -2,6 +2,10 @@
 
 This project is a small reflex game in C++ / Arduino created to be loaded in an ESP32 card. This project use Platformio to works.
 
+### About the [simulator](/reflex_game_sim.cpp)
+
+The file reflex_game_sim.cpp is a simulator of the project behavior that works all in the console of your computer. Be free to use it if you want, you'll don't need any other files to make it work.
+
 ## How To Play
 
 ### Necessary Equipment
