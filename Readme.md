@@ -18,6 +18,25 @@ Just make sure to have a C++ compiler installed on your computer, if it's not th
 - wires (to connect them)
 - USB câble -> connect the card to your pc
 
+### wiring diagram
+
+Of course there's a wiring diagram to follow, else the code will not works properly.
+The diagram is just [here](/Cablage.pptx), the LEDs, Buttons and the screen must be wired like in there.    
+
+summary :
+
+    - GPIO01 -> SCL (OLED Screen)
+    - GPIO02 -> SDA (OLED Screen)
+    - VDD -> VCC (OLED Screen)
+    - GND -> GND (OLED Screen)
+
+    - GPIO13 -> 1st LED
+    - GPIO12 -> 1st Button
+    - GPIO14 -> 2nd LED
+    - GPIO27 -> 2nd Button
+    - GPIO26 -> 3rd LED
+    - GPIO25 -> 3rd Button
+
 ### Instructions To use this code
 
 - make sure to have C++ installed on your computer
