@@ -9,8 +9,8 @@
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 
 // Broches selon ton câblage
-const int ledPins[3] = {23, 22, 21};
-const int buttonPins[3] = {19, 18, 5};
+const int ledPins[3] = {13, 14, 26};
+const int buttonPins[3] = {12, 27, 25};
 
 const int MAX_SUCCES = 5;
 const unsigned long TIMEOUT = 4000;
